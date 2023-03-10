@@ -6,6 +6,7 @@ using static UnityEngine.Physics2D;
 
 public class Frogger : MonoBehaviour
 {
+   
     private SpriteRenderer spriteRenderer;
     public Sprite idleSprite;
     public Sprite leapSprite;

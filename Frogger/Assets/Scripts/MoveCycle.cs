@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveCycle : MonoBehaviour
 {
+    [SerializeField] float limit;
     public Vector2 direction = Vector2.right;
     public float speed = 1f;
     public int size = 1;
