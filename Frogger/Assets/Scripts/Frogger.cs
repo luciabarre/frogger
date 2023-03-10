@@ -1,7 +1,7 @@
 using System.Collections;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-//using static UnityEngine.Physics2D;
+using static UnityEngine.Physics2D;
 
 
 public class Frogger : MonoBehaviour
@@ -49,9 +49,10 @@ public class Frogger : MonoBehaviour
     {
         Vector3 destination = transform.position + direction; 
         // Collider2D barrier = Physics2D.Overlapbox(destination, Vector2.zero, 0f, LayerMask.GetMask("Barrier"));
-        // if(barrier != null){
-        //     return;
-        //   }
+        Collider2D barrier = Physics2D.OverlapArea(destination - Vector3.one * 0.5f, destination + Vector3.one * 0.5f, LayerMask.GetMask("Barrier"));
+        if(barrier != null){
+             return;
+           }
         StartCoroutine(Leap(destination));
 
     }
