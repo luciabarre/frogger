@@ -10,6 +10,7 @@ public class Frogger : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite idleSprite;
     public Sprite leapSprite;
+    public Sprite deathSprite;
 
     private void Awake()
     {
@@ -50,10 +51,24 @@ public class Frogger : MonoBehaviour
         Vector3 destination = transform.position + direction; 
         // Collider2D barrier = Physics2D.Overlapbox(destination, Vector2.zero, 0f, LayerMask.GetMask("Barrier"));
         Collider2D barrier = Physics2D.OverlapArea(destination - Vector3.one * 0.5f, destination + Vector3.one * 0.5f, LayerMask.GetMask("Barrier"));
+        Collider2D platform = Physics2D.OverlapArea(destination - Vector3.one * 0f, destination + Vector3.one * 0f, LayerMask.GetMask("Platform"));
+        Collider2D obstacle = Physics2D.OverlapArea(destination - Vector3.one * 0f, destination + Vector3.one * 0f, LayerMask.GetMask("Obstacle"));
         if(barrier != null){
              return;
            }
-        StartCoroutine(Leap(destination));
+        if(platform != null){
+            transform.SetParent(platform.transform);
+        } else{
+            transform.SetParent(null);
+        }
+
+        if(obstacle != null){
+            transform.position=destination; 
+            Death();
+        }else
+        {
+            StartCoroutine(Leap(destination));
+        }
 
     }
 
@@ -73,5 +88,11 @@ public class Frogger : MonoBehaviour
         spriteRenderer.sprite = idleSprite;
     }
 
+    private void Death()
+    {
+       transform.rotation = Quaternion.identity;
+       spriteRenderer.sprite = deathSprite;
+       enabled = false;
+    }
 
 }

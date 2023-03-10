@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleSprite: {fileID: 21300000, guid: accdfca821fcfad4aa0e79fe4138f7df, type: 3}
   leapSprite: {fileID: 21300000, guid: c032d92b984378d4ebe60f300734cb08, type: 3}
+  deathSprite: {fileID: 21300000, guid: 1695d102dbd9a5949a838586c2e47c81, type: 3}
 --- !u!50 &140410905
 Rigidbody2D:
   serializedVersion: 4
@@ -2467,6 +2468,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6724224599825023118, guid: cc5fa8b7ad9dc4212b9062086a23daf7, type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 803744424203372062, guid: cc5fa8b7ad9dc4212b9062086a23daf7, type: 3}
       propertyPath: m_Name
       value: Turtle3
