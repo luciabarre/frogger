@@ -16,6 +16,7 @@ public class Frogger : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        spawnPosition = transform.position;
     }
     // Start is called before the first frame update
     void Start()
@@ -91,15 +92,20 @@ public class Frogger : MonoBehaviour
 
     private void Death()
     {
+       StopAllCoroutines();
        transform.rotation = Quaternion.identity;
        spriteRenderer.sprite = deathSprite;
        enabled = false;
+       Invoke (nameof(Respwan), 1f);
     }
 
-    private void Respwan()
+    public void Respwan()
     {
-        transform.position = Quaternion.identity;
+        StopAllCoroutines();
+        transform.rotation = Quaternion.identity;
+        transform.position = spawnPosition;
         spriteRenderer.sprite = idleSprite;
+        gameObject.SetActive(true);
         enabled = true;
     }
     private void OnTriggerEnter2D(Collider2D other)
