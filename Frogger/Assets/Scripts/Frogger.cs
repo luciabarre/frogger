@@ -11,6 +11,7 @@ public class Frogger : MonoBehaviour
     public Sprite idleSprite;
     public Sprite leapSprite;
     public Sprite deathSprite;
+    private Vector3 spawnPosition;
 
     private void Awake()
     {
@@ -62,7 +63,7 @@ public class Frogger : MonoBehaviour
             transform.SetParent(null);
         }
 
-        if(obstacle != null){
+        if(obstacle != null && platform == null){
             transform.position=destination; 
             Death();
         }else
@@ -93,6 +94,19 @@ public class Frogger : MonoBehaviour
        transform.rotation = Quaternion.identity;
        spriteRenderer.sprite = deathSprite;
        enabled = false;
+    }
+
+    private void Respwan()
+    {
+        transform.position = Quaternion.identity;
+        spriteRenderer.sprite = idleSprite;
+        enabled = true;
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(enabled && other.gameObject.layer == LayerMask.NameToLayer("Obstacle") && transform.parent == null){
+            Death();
+        }
     }
 
 }
