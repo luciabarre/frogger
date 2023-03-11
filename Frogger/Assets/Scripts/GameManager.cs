@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class GameManager : MonoBehaviour
     private int lives;
     private int time;
     public GameObject gameOverMenu;
+    public TMP_Text scoreText;
+    public TMP_Text livesText;
+    public TMP_Text timeText;
 
     private void Awake()
     {
@@ -48,10 +53,12 @@ public class GameManager : MonoBehaviour
     private IEnumerator Timer(int duration)
     {
         time = duration;
+        timeText.text = time.ToString();
         while(time > 0)
         {
             yield return new WaitForSeconds(1f);
             time--;
+            timeText.text = time.ToString();
         }
        frogger.Death();
     }
@@ -131,9 +138,11 @@ public class GameManager : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
+        scoreText.text = score.ToString();
     }
     private void SetLives(int lives)
     {
         this.lives = lives;
+        livesText.text = lives.ToString();
     }
 }
