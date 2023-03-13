@@ -1,7 +1,7 @@
 using System.Collections;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-//using static UnityEngine.Physics2D;
+using static UnityEngine.Physics2D;
 
 
 public class Frogger : MonoBehaviour
@@ -10,10 +10,14 @@ public class Frogger : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite idleSprite;
     public Sprite leapSprite;
+    public Sprite deathSprite;
+    private Vector3 spawnPosition;
+    private float farthestRow; 
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        spawnPosition = transform.position;
     }
     // Start is called before the first frame update
     void Start()
@@ -49,10 +53,29 @@ public class Frogger : MonoBehaviour
     {
         Vector3 destination = transform.position + direction; 
         // Collider2D barrier = Physics2D.Overlapbox(destination, Vector2.zero, 0f, LayerMask.GetMask("Barrier"));
-        // if(barrier != null){
-        //     return;
-        //   }
-        StartCoroutine(Leap(destination));
+        Collider2D barrier = Physics2D.OverlapArea(destination - Vector3.one * 0.5f, destination + Vector3.one * 0.5f, LayerMask.GetMask("Barrier"));
+        Collider2D platform = Physics2D.OverlapArea(destination - Vector3.one * 0f, destination + Vector3.one * 0f, LayerMask.GetMask("Platform"));
+        Collider2D obstacle = Physics2D.OverlapArea(destination - Vector3.one * 0f, destination + Vector3.one * 0f, LayerMask.GetMask("Obstacle"));
+        if(barrier != null){
+             return;
+           }
+        if(platform != null){
+            transform.SetParent(platform.transform);
+        } else{
+            transform.SetParent(null);
+        }
+
+        if(obstacle != null && platform == null){
+            transform.position=destination; 
+            Death();
+        }else
+        {
+            if(destination.y > farthestRow){
+                farthestRow = destination.y;
+            }
+            FindObjectOfType<GameManager>().AdvancedRow();
+            StartCoroutine(Leap(destination));
+        }
 
     }
 
@@ -72,5 +95,31 @@ public class Frogger : MonoBehaviour
         spriteRenderer.sprite = idleSprite;
     }
 
+    public void Death()
+    {
+       StopAllCoroutines();
+       transform.rotation = Quaternion.identity;
+       spriteRenderer.sprite = deathSprite;
+       enabled = false;
+
+       FindObjectOfType<GameManager>().Died();
+    }
+
+    public void Respwan()
+    {
+        StopAllCoroutines();
+        transform.rotation = Quaternion.identity;
+        transform.position = spawnPosition;
+        farthestRow = spawnPosition.y;
+        spriteRenderer.sprite = idleSprite;
+        gameObject.SetActive(true);
+        enabled = true;
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(enabled && other.gameObject.layer == LayerMask.NameToLayer("Obstacle") && transform.parent == null){
+            Death();
+        }
+    }
 
 }
