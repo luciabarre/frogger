@@ -13,3 +13,6 @@ In order to move the frog across the screen you can use the arrow keys. These ar
 
 ### How to win
 In order to win the game, you must take 5 frogs across the road and the river. You have 3 lives to achieve this.
+
+### References 
+CANAL Zigurous.(21 octubre 2021). *How to make a Frogger Game in JavaScript* [Video]. YouTube. https://youtu.be/GxlxZ5q__Tc
